@@ -1,0 +1,115 @@
+.node {
+  padding: 20px;
+  border: 2px solid $main;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.7);
+  min-width: 150px;
+
+  &:hover {
+    .node__absolute {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+.node__title {
+  text-align: center;
+  font-weight: 700;
+}
+
+.node__input, .node__textarea {
+  font-size: 12px;
+  padding: 5px 8px;
+  outline: none;
+  border: 1px solid $main;
+  resize: none;
+  max-width: 250px;
+  display: block;
+  width: calc(100% - 20px);
+}
+
+.node__timeout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  input {
+    margin: 0 8px 0 0;
+    width: 35px;
+  }
+}
+
+.node_script {
+  .node__textarea {
+    width: 300px;
+    max-width: initial;
+  }
+}
+
+.node__absolute {
+  position: absolute;
+  top: -35px;
+  left: calc(50% - 25px);
+  width: 50px;
+  height: 40px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+  overflow: hidden;
+
+  &-container {
+    height: 25px;
+    border: 1px solid $main;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+}
+
+.node__trash {
+  background-image: url("data:image/svg+xml,%3Csvg width='20px' height='20px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 12V17' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M14 12V17' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M4 7H20' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  width: 25px;
+  height: 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  &:hover {
+    background-color: #ffcbcb;
+  }
+}
+
+.node__copy {
+  background-image: url("data:image/svg+xml,%3Csvg width='20px' height='20px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Edit / Copy'%3E%3Cpath id='Vector' d='M9 9V6.2002C9 5.08009 9 4.51962 9.21799 4.0918C9.40973 3.71547 9.71547 3.40973 10.0918 3.21799C10.5196 3 11.0801 3 12.2002 3H17.8002C18.9203 3 19.4801 3 19.9079 3.21799C20.2842 3.40973 20.5905 3.71547 20.7822 4.0918C21.0002 4.51962 21.0002 5.07967 21.0002 6.19978V11.7998C21.0002 12.9199 21.0002 13.48 20.7822 13.9078C20.5905 14.2841 20.2839 14.5905 19.9076 14.7822C19.4802 15 18.921 15 17.8031 15H15M9 9H6.2002C5.08009 9 4.51962 9 4.0918 9.21799C3.71547 9.40973 3.40973 9.71547 3.21799 10.0918C3 10.5196 3 11.0801 3 12.2002V17.8002C3 18.9203 3 19.4801 3.21799 19.9079C3.40973 20.2842 3.71547 20.5905 4.0918 20.7822C4.5192 21 5.07899 21 6.19691 21H11.8036C12.9215 21 13.4805 21 13.9079 20.7822C14.2842 20.5905 14.5905 20.2839 14.7822 19.9076C15 19.4802 15 18.921 15 17.8031V15M9 9H11.8002C12.9203 9 13.4801 9 13.9079 9.21799C14.2842 9.40973 14.5905 9.71547 14.7822 10.0918C15 10.5192 15 11.079 15 12.1969L15 15' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/g%3E%3C/svg%3E");
+  width: 25px;
+  height: 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(204, 232, 204);
+  }
+}
+
+.node__action {
+  padding: 8px;
+  border: 1px solid $main;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.2s linear;
+  cursor: pointer;
+  &:hover {
+    background: $main;
+    color: $other
+  }
+}
+
+
+.node_start {
+  transition: background-color 0.2s linear;
+  &:hover {
+    background: $main;
+    color: $other
+  }
+}

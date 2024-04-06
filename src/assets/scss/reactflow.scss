@@ -1,0 +1,15 @@
+.react-flow__handle-right {
+  right: -3px;
+}
+
+.react-flow__handle-left {
+  left: -3px;
+}
+
+.react-flow__edge-path, .react-flow__connection-path {
+  stroke: $main;
+  opacity: 0.7;
+}
+.react-flow__attribution {
+  display: none;
+}

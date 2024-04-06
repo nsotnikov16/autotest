@@ -1,0 +1,40 @@
+$main: #0a5d47;
+$other: white;
+@import 'fonts';
+@import 'ui';
+@import 'reactflow';
+@import 'node.scss';
+@import "sidebar";
+
+body {
+  color: $main;
+  font-family: 'Montserrat';
+}
+
+.app {
+  display: flex;
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__generator {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: $main;
+    color: white;
+    font-weight: 600;
+    border: 3px solid $main;
+    cursor: pointer;
+    z-index: 3;
+    transition: background-color 0.3s linear;
+
+    &:hover {
+      background: white;
+      color: $main;
+    }
+  }
+}
