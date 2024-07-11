@@ -22,7 +22,6 @@ function getClickFunctionChunk() {
 function findElementFunctionChunk() {
     return `
     function findElement(selector) {
-    console.log('tut');
         return new Promise((r) => {
             let el = false;
             const timeout = setTimeout(() => {
