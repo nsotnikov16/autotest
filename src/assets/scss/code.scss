@@ -1,0 +1,64 @@
+.code {
+  max-width: 600px;
+  padding: 30px 0 0 0;
+
+  &__result {
+    font-style: italic;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid $main;
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: $main;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $other;
+      border-radius: 20px;
+      border: 1px solid $main;
+    }
+  }
+
+  &__text {
+    margin: 0 0 25px;
+    font-weight: 600;
+    padding-left: 20px;
+  }
+
+  &__copy {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin: 25px 0 0 0;
+  }
+
+  &__copy-success {
+    font-style: italic;
+    margin: 0 10px 0 0;
+    display: none;
+
+    &_open {
+      display: inline-block;
+    }
+  }
+
+  &__copy-btn {
+    padding: 7px 10px;
+    border-radius: 5px;
+    border: 1px solid $main;
+    background: $main;
+    color: $other;
+    font-weight: 600;
+    display: block;
+    &:hover {
+      background: $other;
+      color: $main;
+    }
+  }
+}

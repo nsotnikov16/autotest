@@ -1,5 +1,3 @@
-import {useCallback} from "react";
-
 export const updateStorage = (data, testId) => {
     if (!testId) return;
     window.localStorage.setItem(`test-${testId}-data`, JSON.stringify(data));
@@ -14,11 +12,11 @@ export const getInitialStorageData = (type, testId) => {
         const data = JSON.parse(window.localStorage.getItem(`test-${testId}-data`));
         if (Array.isArray(data[type]) && data[type].length) return data[type];
     } catch (e) {
-
+        // console.log(e);
     }
     let defaultArray = [];
     if (type === 'nodes') defaultArray = [
-        {id: getId(), type: 'StartNode', position: {x: 15, y: 15}},
+        { id: getId(), type: 'StartNode', position: { x: 15, y: 15 } },
     ]
     return defaultArray;
 }
@@ -37,7 +35,7 @@ export const getIdForTest = () => {
 
 export const modifyNodes = (nodes) => {
     nodes.forEach((node, index) => {
-        if (index === 0) node.data = {...node.data, fromStart: true};
+        if (index === 0) node.data = { ...node.data, fromStart: true };
     });
 
     return nodes;
@@ -51,7 +49,7 @@ export const getTestsLocalStorage = () => {
             const result = JSON.parse(storage.getItem('tests-itrinity'));
             if (Array.isArray(result)) tests = result;
         } catch (e) {
-
+            //
         }
     }
     return tests;
@@ -63,8 +61,4 @@ export const onChangeInput = (key, value, nodeId) => {
         if (node.id === nodeId) node.data[key] = value;
         return node;
     }))
-}
-
-export const generate = async (nodes, edges) => {
-
 }

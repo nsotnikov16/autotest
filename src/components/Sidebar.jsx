@@ -1,6 +1,5 @@
-import MainNode from "./MainNode.jsx";
-import React, {useCallback, useEffect, useState} from "react";
-import {getCurrentTestId, getIdForTest, getTestsLocalStorage} from "../tools/functions.js";
+import {useEffect, useState} from "react";
+import {getIdForTest, getTestsLocalStorage} from "../tools/functions.js";
 import logo from '../assets/images/logo.svg';
 
 export default function Sidebar({setTestId}) {

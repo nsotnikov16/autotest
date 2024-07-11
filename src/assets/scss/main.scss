@@ -5,6 +5,8 @@ $other: white;
 @import 'reactflow';
 @import 'node.scss';
 @import "sidebar";
+@import "popup";
+@import "code";
 
 body {
   color: $main;
