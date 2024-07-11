@@ -48,10 +48,7 @@ function App() {
         window.setNodes = setNodes;
         window.setEdges = setEdges;
         window.addNode = (node) => setNodes((nds) => modifyNodes(nds.concat(node)));
-        window.removeNode = (nodeId) => {
-            setEdges(edges.filter(edge => !(edge?.target === nodeId || edge?.source === nodeId)))
-            setNodes((nds) => nds.filter(n => n.id !== nodeId));
-        }
+        window.removeNode = (nodeId) => setNodes((nds) => nds.filter(n => n.id !== nodeId));
     }, [])
 
     useEffect(() => {
@@ -63,6 +60,16 @@ function App() {
         setNodes(getInitialStorageData('nodes', testId));
         setEdges(getInitialStorageData('edges', testId));
     }, [testId])
+
+    useEffect(() => {
+        if (!edges.length) return; 
+        let ids = [];
+        nodes.forEach(node => {
+            const nodeEdges = edges.filter(e => e?.target === node.id || e?.source === node.id);
+            if (nodeEdges.length) nodeEdges.forEach(e => ids.push(e.id)); 
+        })
+        setEdges(edges.filter(edge => ids.includes(edge.id)));
+    }, [nodes]);
 
     useEffect(() => {
         updateStorage({ nodes, edges }, testId);

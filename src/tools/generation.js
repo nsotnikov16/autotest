@@ -33,7 +33,6 @@ function findElementFunctionChunk() {
                 if (el) {
                     clearInterval(interval);
                     clearTimeout(timeout);
-                    console.log(selector);
                     return r(el);
                 }
             }, 100);
@@ -42,16 +41,38 @@ function findElementFunctionChunk() {
     `
 }
 
+function getShowElementFunctionChunk() {
+    return `
+    function getShowElement(element) {
+        return new Promise((r) => {
+            let result = false;
+            const timeout = setTimeout(() => {
+                clearInterval(interval);
+                r(result);
+            }, 3000);
+            const interval = setInterval(() => {
+                const {x, y} = element.getBoundingClientRect();
+                if (x && y) {
+                    result = true;
+                    clearInterval(interval);
+                    r(result);
+                }
+            }, 100)
+        })
+    }
+    `
+}
+
 function getChunkForAction(selector, action, error) {
     return `   
         var element = document.querySelector('${selector}');
         if (!element) element = await findElement('${selector}');
-        console.log(element);
-        if (element) {
-            ${typeof action === 'function' ? action(selector): ''}
+        var show = await getShowElement(element);
+        if (element && show) {
+            ${typeof action === 'function' ? action(selector) : ''}
         } else {
             ${typeof error === 'function' ? error(selector) : ''}
-            alert('Элемент ${selector} не найден');
+            alert('Элемент ${selector} не найден в DOM дереве или не отобразился визуально');
             throw new Error();
         };
     `
@@ -106,13 +127,13 @@ function modify(nodes, edges) {
 
 export const generate = async (nodes, edges) => {
     nodes = modify(nodes, edges);
-    console.log(nodes, edges);
     let chunk = `(async function test(){`;
     try {
         if (!nodes.length) throw new Error('Отсутствуют элементы в конструкторе');
         if (nodes.some(node => node.type === 'StartNode')) throw new Error('Сценарий не начат');
         chunk += getClickFunctionChunk();
         chunk += findElementFunctionChunk();
+        chunk += getShowElementFunctionChunk();
 
         nodes.forEach(({ data, type }) => {
             if (!data) return;
@@ -127,10 +148,7 @@ export const generate = async (nodes, edges) => {
                     if (data?.selector) chunk += getChunkForAction(data.selector, genFocusAction);
                     break;
                 case "InputNode":
-                    if (data?.selector) {
-                        chunk += getChunkForAction(data.selector, genFocusAction);
-                        chunk += getChunkForAction(data.selector, () => genInputAction(data.value));
-                    }
+                    if (data?.selector) chunk += getChunkForAction(data.selector, () => genInputAction(data.value));
                     break;
                 case "ScriptNode":
                     if (data?.script) chunk += genScriptAction(data.script);
