@@ -49,7 +49,7 @@ export default function Sidebar({ setTestId }) {
     return <aside className={`sidebar ${!isOpenSidebar ? 'sidebar_hide' : ''}`}>
         <div className="sidebar__container">
             <div className="sidebar__header">
-                <a style={{opacity: 0}} className="sidebar__logo" target="_blank" href='/'><img src={logo} alt="logo" /></a>
+                <a className="sidebar__logo" target="_blank" href='/'><img src={logo} alt="logo" /></a>
                 <div className="sidebar__arrow" onClick={toggleSidebar}>
                     <svg width="26px" height="26px" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
