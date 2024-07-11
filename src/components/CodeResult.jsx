@@ -12,7 +12,7 @@ export function CodeResult({ result }) {
 
     return <div className="code">
         <ol className="code__text">
-            <li>Скопируйте скрипт для вставки</li>
+            <li>Скопируйте код</li>
             <li>Перейдите в консоль браузера на нужном сайте</li>
             <li>Вставьте код</li>
         </ol>

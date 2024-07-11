@@ -1,8 +1,8 @@
-import {useEffect, useState} from "react";
-import {getIdForTest, getTestsLocalStorage} from "../tools/functions.js";
+import { useEffect, useState } from "react";
+import { getIdForTest, getTestsLocalStorage } from "../tools/functions.js";
 import logo from '../assets/images/logo.svg';
 
-export default function Sidebar({setTestId}) {
+export default function Sidebar({ setTestId }) {
     const [tests, setTests] = useState(getTestsLocalStorage() ?? []);
     const [isOpenSidebar, setIsOpenSidebar] = useState(Boolean(Number(window.localStorage.getItem('sidebar-open'))));
 
@@ -12,10 +12,10 @@ export default function Sidebar({setTestId}) {
     }
 
     const addTest = () => {
-        setTests((array) => array.concat({id: getIdForTest(), name: '', on: false}))
+        setTests((array) => array.concat({ id: getIdForTest(), name: '', on: false }))
     }
 
-    const onChange = ({target}, id) => {
+    const onChange = ({ target }, id) => {
         setTests((array) => array.map(item => {
             if (item.id === id) item.name = target.value;
             return item;
@@ -49,14 +49,14 @@ export default function Sidebar({setTestId}) {
     return <aside className={`sidebar ${!isOpenSidebar ? 'sidebar_hide' : ''}`}>
         <div className="sidebar__container">
             <div className="sidebar__header">
+                <a className="sidebar__logo" target="_blank" href='/'><img src={logo} alt="logo" /></a>
                 <div className="sidebar__arrow" onClick={toggleSidebar}>
                     <svg width="26px" height="26px" viewBox="0 0 24 24"
-                         xmlns="http://www.w3.org/2000/svg">
+                        xmlns="http://www.w3.org/2000/svg">
                         <path d="M4 12H20M4 12L8 8M4 12L8 16" strokeWidth="2" strokeLinecap="round"
-                              strokeLinejoin="round"/>
+                            strokeLinejoin="round" />
                     </svg>
                 </div>
-                {/*<a className="sidebar__logo" target="_blank" href='/'><img src={logo} alt="logo"/></a>*/}
             </div>
             <div className="sidebar__content">
                 <button className="sidebar__add" onClick={addTest}>Добавить сценарий</button>
@@ -64,8 +64,8 @@ export default function Sidebar({setTestId}) {
                     <div className="sidebar__tests">
                         {tests.map((test) => {
                             return <div className="sidebar__test" key={test.id}>
-                                <input className="sidebar__test-name" type="text" placeholder="Название теста"
-                                       defaultValue={test.name} onChange={(e) => onChange(e, test.id)}/>
+                                <input className="sidebar__test-name" type="text" placeholder="Название сценария"
+                                    defaultValue={test.name} onChange={(e) => onChange(e, test.id)} />
                                 <div className={`sidebar__test-switch ${test.on ? 'active' : ''}`} onClick={() => handleSwitch(test.id)}></div>
                                 <div className="node__trash sidebar__test-trash" onClick={() => handleTrash(test.id)}></div>
                             </div>

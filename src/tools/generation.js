@@ -19,18 +19,22 @@ function getClickFunctionChunk() {
     `;
 }
 
-function awaitElementFunctionChunk() {
+function findElementFunctionChunk() {
     return `
-    async function awaitElement(selector) {
-        let el = false;
+    function findElement(selector) {
+    console.log('tut');
         return new Promise((r) => {
+            let el = false;
             const timeout = setTimeout(() => {
                 clearInterval(interval);
-                if (!el) r(false);
+                r(el);
             }, 3000);
             const interval = setInterval(() => {
-                if (el = document.querySelector(selector)) {
+                el = document.querySelector(selector);
+                if (el) {
                     clearInterval(interval);
+                    clearTimeout(timeout);
+                    console.log(selector);
                     return r(el);
                 }
             }, 100);
@@ -42,9 +46,10 @@ function awaitElementFunctionChunk() {
 function getChunkForAction(selector, action, error) {
     return `   
         var element = document.querySelector('${selector}');
-        if (!element) element = await awaitElement('${selector}');
+        if (!element) element = await findElement('${selector}');
+        console.log(element);
         if (element) {
-            ${action(selector)}
+            ${typeof action === 'function' ? action(selector): ''}
         } else {
             ${typeof error === 'function' ? error(selector) : ''}
             alert('Элемент ${selector} не найден');
@@ -77,27 +82,38 @@ function genScriptAction(script) {
     return `try {${script}} catch (e) {};`;
 }
 
-function sort(nodes) {
-    nodes.sort((a, b) => a.next - b.next);
+function modify(nodes, edges) {
+    let newNodes = nodes;
+    if (nodes.length && edges.length) {
+        // Установим следующие элементы
+        nodes.forEach(node => {
+            const findEdgeNext = edges.find(edge => edge.source === node.id);
+            if (findEdgeNext) node.next = findEdgeNext?.target;
+        })
+
+        // Отсортируем по возрастающей
+        nodes.sort((a, b) => a.next - b.next);
+        newNodes = [];
+        let nextNode = nodes.find(node => node.data?.fromStart) ?? nodes[0];
+        while (nextNode) {
+            if (nextNode) newNodes.push(nextNode);
+            nextNode = nodes.find(node => node.id === nextNode.next)
+        };
+    }
+
+    return newNodes;
 }
 
-function filter(nodes) {
-    return nodes.filter(node => {
-        if (!node.data.fromStart && !node.next) return false;
-        return true;
-    })
-}
 
-export const generate = async (nodes) => {
-    sort(nodes);
-    nodes = filter(nodes);
-    console.log(nodes);
+export const generate = async (nodes, edges) => {
+    nodes = modify(nodes, edges);
+    console.log(nodes, edges);
     let chunk = `(async function test(){`;
     try {
         if (!nodes.length) throw new Error('Отсутствуют элементы в конструкторе');
         if (nodes.some(node => node.type === 'StartNode')) throw new Error('Сценарий не начат');
         chunk += getClickFunctionChunk();
-        chunk += awaitElementFunctionChunk();
+        chunk += findElementFunctionChunk();
 
         nodes.forEach(({ data, type }) => {
             if (!data) return;

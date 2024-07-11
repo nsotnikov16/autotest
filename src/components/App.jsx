@@ -23,7 +23,6 @@ import Sidebar from "./Sidebar.jsx";
 import FlowWithProvider from "./FlowWithProvider.jsx";
 import Modal from './Modal.jsx';
 import { CodeResult } from './CodeResult.jsx';
-import parse from 'html-react-parser'
 
 const initialNodes = getInitialStorageData('nodes');
 const initialEdges = getInitialStorageData('edges');
@@ -39,6 +38,7 @@ function App() {
     const generateCode = async () => {
         let code = generate(nodes, edges); // Компонент преобразует результат в промис
         let string = await code; // Получим строку
+        if (!string) return;
         setModalCodeResult(string);
         setModalCodeOpen(true);
     }
@@ -48,7 +48,10 @@ function App() {
         window.setNodes = setNodes;
         window.setEdges = setEdges;
         window.addNode = (node) => setNodes((nds) => modifyNodes(nds.concat(node)));
-        window.removeNode = (nodeId) => setNodes((nds) => nds.filter(n => n.id !== nodeId))
+        window.removeNode = (nodeId) => {
+            setEdges(edges.filter(edge => !(edge?.target === nodeId || edge?.source === nodeId)))
+            setNodes((nds) => nds.filter(n => n.id !== nodeId));
+        }
     }, [])
 
     useEffect(() => {
@@ -62,16 +65,6 @@ function App() {
     }, [testId])
 
     useEffect(() => {
-        if (nodes.length && edges.length) {
-            let newNodes = nodes.map(node => {
-                const findEdge = edges.find(edge => edge.source === node.id);
-                if (findEdge && findEdge.target) node.next = findEdge.target;
-                return node;
-            })
-            setNodes(newNodes);
-        }
-        
-
         updateStorage({ nodes, edges }, testId);
         if (!nodes.length) {
             window.addNode({
