@@ -1,0 +1,26 @@
+.edit {
+  min-width: 250px;
+
+  &__btns {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__btn {
+    background: $other;
+    border: 1px solid $main;
+    color: $main;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:hover {
+      color: $other;
+      background: $main;
+    }
+  }
+}

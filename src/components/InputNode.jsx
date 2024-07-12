@@ -1,9 +1,10 @@
 import MainNode from "./MainNode.jsx";
 import {onChangeInput} from "../tools/functions.js";
+import { nodeTypes } from "../tools/constants.js";
 
 export default function InputNode(props) {
     return (
-        <MainNode title="Ввод значения" addClass="node_input" {...props}>
+        <MainNode title={nodeTypes.InputNode} addClass="node_input" {...props}>
             <textarea
                 cols="30"
                 rows="3"

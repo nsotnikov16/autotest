@@ -1,5 +1,4 @@
 import {useCallback} from 'react';
-import {Handle, Position} from 'reactflow';
 import {getId} from "../tools/functions.js";
 
 export default function StartNode(props) {

@@ -1,9 +1,10 @@
 import MainNode from "./MainNode.jsx";
 import {onChangeInput} from "../tools/functions.js";
+import { nodeTypes } from "../tools/constants.js";
 
 export default function ClickNode(props) {
     return (
-        <MainNode addClass="node_click" title="Клик" {...props}>
+        <MainNode addClass="node_click" title={nodeTypes.ClickNode} {...props}>
             <textarea
                 cols="30"
                 rows="3"

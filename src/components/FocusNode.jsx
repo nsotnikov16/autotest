@@ -1,9 +1,10 @@
 import MainNode from "./MainNode.jsx";
 import {onChangeInput} from "../tools/functions.js";
+import { nodeTypes } from "../tools/constants.js";
 
 export default function FocusNode(props) {
     return (
-        <MainNode title="Фокус" addClass="node_focus" {...props}>
+        <MainNode title={nodeTypes.FocusNode} addClass="node_focus" {...props}>
             <textarea
                 cols="30"
                 rows="3"

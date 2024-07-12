@@ -1,6 +1,7 @@
 import MainNode from "./MainNode.jsx";
-import {useCallback} from "react";
-import {getId} from "../tools/functions.js";
+import { useCallback } from "react";
+import { getId } from "../tools/functions.js";
+import { nodeTypes, nodeTypesActual } from "../tools/constants.js";
 
 export default function ChoiceNode(props) {
     const onClick = useCallback((type) => {
@@ -9,7 +10,7 @@ export default function ChoiceNode(props) {
         window.addNode({
             id,
             type,
-            position: {x: props.xPos, y: props.yPos + 25},
+            position: { x: props.xPos, y: props.yPos + 25 },
             data: {}
         });
 
@@ -21,12 +22,10 @@ export default function ChoiceNode(props) {
         });
     }, []);
     return (
-        <MainNode title="Действие" addClass="node_action nodrag" {...props}>
-            <div className="mt-10px node__action nodrag" onClick={() => onClick('ClickNode')}>Клик</div>
-            <div className="mt-10px node__action nodrag" onClick={() => onClick('FocusNode')}>Фокус</div>
-            <div className="mt-10px node__action nodrag" onClick={() => onClick('InputNode')}>Ввод значения</div>
-            <div className="mt-10px node__action nodrag" onClick={() => onClick('TimeoutNode')}>Ожидание</div>
-            <div className="mt-10px node__action nodrag" onClick={() => onClick('ScriptNode')}>Свой скрипт</div>
+        <MainNode title={nodeTypes.ChoiceNode} addClass="node_action nodrag" {...props}>
+            {nodeTypesActual.map((type, index) => {
+                return <div key={index} className="mt-10px node__action nodrag" onClick={() => onClick(type)}>{nodeTypes[type]}</div>
+            })}
         </MainNode>
     );
 }

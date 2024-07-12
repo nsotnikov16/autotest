@@ -22,11 +22,12 @@ import { generate } from '../tools/generation.js';
 import Sidebar from "./Sidebar.jsx";
 import FlowWithProvider from "./FlowWithProvider.jsx";
 import Modal from './Modal.jsx';
+import Edit from './Edit.jsx';
 import { CodeResult } from './CodeResult.jsx';
 
 const initialNodes = getInitialStorageData('nodes');
 const initialEdges = getInitialStorageData('edges');
-const nodeTypes = { StartNode, ClickNode, FocusNode, TimeoutNode, InputNode, ScriptNode, ChoiceNode };
+const types = { StartNode, ClickNode, FocusNode, TimeoutNode, InputNode, ScriptNode, ChoiceNode };
 
 function App() {
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -34,6 +35,7 @@ function App() {
     const [testId, setTestId] = useState(getCurrentTestId());
     const [modalCodeOpen, setModalCodeOpen] = useState(false);
     const [modalCodeResult, setModalCodeResult] = useState('');
+    const [modalEditNodeOpen, setModalEditNodeOpen] = useState(false);
 
     const generateCode = async () => {
         let code = generate(nodes, edges); // Компонент преобразует результат в промис
@@ -49,6 +51,7 @@ function App() {
         window.setEdges = setEdges;
         window.addNode = (node) => setNodes((nds) => modifyNodes(nds.concat(node)));
         window.removeNode = (nodeId) => setNodes((nds) => nds.filter(n => n.id !== nodeId));
+        window.setModalEditNodeOpen = setModalEditNodeOpen;
     }, [])
 
     useEffect(() => {
@@ -62,6 +65,7 @@ function App() {
     }, [testId])
 
     useEffect(() => {
+        window.nodes = nodes;
         if (!edges.length) return; 
         let ids = [];
         nodes.forEach(node => {
@@ -82,6 +86,9 @@ function App() {
         }
 
     }, [nodes, edges]);
+    useEffect(() => {
+        if (!modalEditNodeOpen) window.editId = false;
+    }, [modalEditNodeOpen])
 
     return (
         <div className="app">
@@ -97,11 +104,14 @@ function App() {
                             onNodesChange={onNodesChange}
                             onEdgesChange={onEdgesChange}
                             snapToGrid={true}
-                            nodeTypes={nodeTypes} />
+                            nodeTypes={types} />
                     </div>
                 }
                 <Modal isOpen={modalCodeOpen} setIsOpen={setModalCodeOpen}>
                     <CodeResult result={modalCodeResult} />
+                </Modal>
+                <Modal isOpen={modalEditNodeOpen} setIsOpen={setModalEditNodeOpen}>
+                    <Edit />
                 </Modal>
             </div>
         </div>

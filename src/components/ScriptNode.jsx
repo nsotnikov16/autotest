@@ -1,9 +1,10 @@
 import MainNode from "./MainNode.jsx";
 import {onChangeInput} from "../tools/functions.js";
+import { nodeTypes } from "../tools/constants.js";
 
 export default function ScriptNode(props) {
     return (
-        <MainNode title="Свой скрипт" addClass="node_script" {...props}>
+        <MainNode title={nodeTypes.ScriptNode} addClass="node_script" {...props}>
             <textarea
                 cols="30"
                 rows="10"

@@ -1,6 +1,7 @@
 import MainNode from "./MainNode.jsx";
 import {onChangeInput} from "../tools/functions.js";
 import {useCallback} from "react";
+import { nodeTypes } from "../tools/constants.js";
 
 export default function TimeoutNode(props) {
     const onChange = useCallback(({target}) => {
@@ -8,7 +9,7 @@ export default function TimeoutNode(props) {
         onChangeInput('sec', target.value, props.id);
     }, []);
     return (
-        <MainNode title="Ожидание" addClass="node_timeout" {...props}>
+        <MainNode title={nodeTypes.TimeoutNode} addClass="node_timeout" {...props}>
             <div className="node__timeout mt-10px">
                 <input
                     className="node__input nodrag"
