@@ -13,7 +13,7 @@ export default function Edit({ }) {
     }
 
     return <div className="edit">
-        <p className="edit__text">Изменить тип элемента</p>
+        <p className="edit__text">Изменить тип блока</p>
         <div className="edit__btns">
             {nodeTypesActual.map((type, index) => {
                 return <button key={index} className="edit__btn" onClick={() => onClick(type)}>{nodeTypes[type]}</button>

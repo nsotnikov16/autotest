@@ -141,3 +141,16 @@
     color: $other;
   }
 }
+
+
+.node__viewport {
+  display: flex;
+  align-items: center;
+  input[type="checkbox"] {
+    margin-right: 5px;
+  }
+
+  span {
+    font-size: 11px;
+  }
+}

@@ -21,19 +21,19 @@ function getClickFunctionChunk() {
 
 function findElementFunctionChunk() {
     return `
-    function findElement(selector) {
+    function findElements(selector) {
         return new Promise((r) => {
-            let el = false;
+            let els = false;
             const timeout = setTimeout(() => {
                 clearInterval(interval);
-                r(el);
+                r(els.length ? els : false);
             }, 3000);
             const interval = setInterval(() => {
-                el = document.querySelector(selector);
-                if (el) {
+                els = document.querySelectorAll(selector);
+                if (els.length) {
                     clearInterval(interval);
                     clearTimeout(timeout);
-                    return r(el);
+                    return r(els);
                 }
             }, 100);
         });
@@ -63,18 +63,24 @@ function getShowElementFunctionChunk() {
     `
 }
 
-function getChunkForAction(selector, action, error) {
+function getChunkForAction(selector, action, excludeViewport) {
     return `   
-        var element = document.querySelector('${selector}');
-        if (!element) element = await findElement('${selector}');
-        var show = await getShowElement(element);
-        if (element && show) {
-            ${typeof action === 'function' ? action(selector) : ''}
-        } else {
-            ${typeof error === 'function' ? error(selector) : ''}
-            alert('Элемент ${selector} не найден в DOM дереве или не отобразился визуально');
+        var elements = document.querySelectorAll('${selector}');
+        if (!elements.length) elements = await findElements('${selector}');
+        if (!elements.length) {
+            alert('Элементы с селектором ${selector} не найдены в DOM дереве');
             throw new Error();
-        };
+        }
+
+        for (let index = 0; index < elements.length; index++) {
+            const element = elements[index];
+            var show = ${excludeViewport ? 'true;' : 'await getShowElement(element);'}
+            if (show) {
+                ${typeof action === 'function' ? action(selector) : ''}
+            } else {
+                console.warn('Автотест: Элемент ${selector} с индексом '+ index + ' не появился в зоне видимости');
+            };
+        }
     `
 }
 
@@ -99,6 +105,7 @@ function genTimeoutAction(timeout) {
 }
 
 function genScriptAction(script) {
+    
     return `try {${script}} catch (e) {};`;
 }
 
@@ -137,18 +144,19 @@ export const generate = async (nodes, edges) => {
 
         nodes.forEach(({ data, type }) => {
             if (!data) return;
+            const excludeViewport = data?.excludeViewport;
             switch (type) {
                 case "TimeoutNode":
                     if (data?.sec) chunk += genTimeoutAction(data.sec);
                     break;
                 case "ClickNode":
-                    if (data?.selector) chunk += getChunkForAction(data.selector, genClickAction);
+                    if (data?.selector) chunk += getChunkForAction(data.selector, genClickAction, excludeViewport);
                     break;
                 case "FocusNode":
-                    if (data?.selector) chunk += getChunkForAction(data.selector, genFocusAction);
+                    if (data?.selector) chunk += getChunkForAction(data.selector, genFocusAction, excludeViewport);
                     break;
                 case "InputNode":
-                    if (data?.selector) chunk += getChunkForAction(data.selector, () => genInputAction(data.value));
+                    if (data?.selector) chunk += getChunkForAction(data.selector, () => genInputAction(data.value), excludeViewport);
                     break;
                 case "ScriptNode":
                     if (data?.script) chunk += genScriptAction(data.script);
