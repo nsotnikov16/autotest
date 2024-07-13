@@ -16,7 +16,8 @@ import {
     getId,
     getInitialStorageData,
     updateStorage,
-    modifyNodes
+    modifyNodes,
+    getIsMobile
 } from "../tools/functions.js";
 import { generate } from '../tools/generation.js';
 import Sidebar from "./Sidebar.jsx";
@@ -24,12 +25,16 @@ import FlowWithProvider from "./FlowWithProvider.jsx";
 import Modal from './Modal.jsx';
 import Edit from './Edit.jsx';
 import { CodeResult } from './CodeResult.jsx';
+import Mobile from './Mobile.jsx';
 
 const initialNodes = getInitialStorageData('nodes');
 const initialEdges = getInitialStorageData('edges');
 const types = { StartNode, ClickNode, FocusNode, TimeoutNode, InputNode, ScriptNode, ChoiceNode };
+const isMobile = getIsMobile();
 
 function App() {
+    if (isMobile) return <Mobile />
+
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [testId, setTestId] = useState(getCurrentTestId());
@@ -66,11 +71,11 @@ function App() {
 
     useEffect(() => {
         window.nodes = nodes;
-        if (!edges.length) return; 
+        if (!edges.length) return;
         let ids = [];
         nodes.forEach(node => {
             const nodeEdges = edges.filter(e => e?.target === node.id || e?.source === node.id);
-            if (nodeEdges.length) nodeEdges.forEach(e => ids.push(e.id)); 
+            if (nodeEdges.length) nodeEdges.forEach(e => ids.push(e.id));
         })
         setEdges(edges.filter(edge => ids.includes(edge.id)));
     }, [nodes]);
