@@ -4,7 +4,8 @@ import logo from '../assets/images/logo.svg';
 
 export default function Sidebar({ setTestId }) {
     const [tests, setTests] = useState(getTestsLocalStorage() ?? []);
-    const [isOpenSidebar, setIsOpenSidebar] = useState(Boolean(Number(window.localStorage.getItem('sidebar-open'))));
+    const sidebarLocal = localStorage.getItem('sidebar-open') == null ? true : Boolean(Number(window.localStorage.getItem('sidebar-open')));
+    const [isOpenSidebar, setIsOpenSidebar] = useState(sidebarLocal);
 
     const toggleSidebar = () => {
         setIsOpenSidebar(!isOpenSidebar);
